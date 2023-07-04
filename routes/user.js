@@ -8,7 +8,7 @@ const { usersTable } = require('../src/Models');
 usersRouter.use(express.json());
 
 usersRouter.post('/signup', signUpHandler);
-usersRouter.post('/signin', basicAuth, signIn);
+usersRouter.post('/signin', basicAuth, signIn );
 
 async function signIn(req, res) {
   res.status(200).json(req.user);
