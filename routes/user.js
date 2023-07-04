@@ -8,24 +8,10 @@ const { usersTable } = require('../src/Models');
 usersRouter.use(express.json());
 
 usersRouter.post('/signup', signUpHandler);
-usersRouter.post('/signin', signInHandler);
+usersRouter.post('/signin', basicAuth, signIn);
 
-async function signInHandler(req, res) {
-  try {
-    const foundUser = await usersTable.findOne({ where: { username: req.body.username } });
-    if (foundUser) {
-      const validUser = await bcrypt.compare(req.body.password, foundUser.password);
-      if (validUser) {
-        res.status(201).send(foundUser);
-      } else {
-        res.status(401).json({ error: 'Invalid password' });
-      }
-    } else {
-      res.status(401).json({ error: 'Invalid username' });
-    }
-  } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
+async function signIn(req, res) {
+  res.status(200).json(req.user);
 }
 
 async function signUpHandler(req, res) {
